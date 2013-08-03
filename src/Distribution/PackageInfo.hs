@@ -1,5 +1,7 @@
 module Distribution.PackageInfo
     ( fetchPackageInfo
+    , fetchLatestPackageInfo
+    , Package(..)
     ) where
 
 import qualified Distribution.Package as P
@@ -25,6 +27,11 @@ import Data.Time.Clock.POSIX (posixSecondsToUTCTime)
 import Control.Exception (throw)
 
 import Data.Maybe (catMaybes)
+import Data.List (nubBy, sortBy)
+import Data.Ord (comparing)
+import System.FilePath.Posix (takeBaseName)
+
+import qualified Data.HashMap.Lazy as Map
 
 import qualified Distribution.Category as DC
 
@@ -71,6 +78,22 @@ isNomalFile _ = False
 -- main
 -- =============================================================================
 
+--fetchLatestPackageInfo :: FilePath -> IO [Package]
+fetchLatestPackageInfo tarName time = do
+    contents <- BL.readFile tarName -- "00-index.tar.gz"
+    return
+        $ Map.fromList
+        $ catMaybes
+        $ map hoge
+        $ sortBy (comparing (eToU . Tar.entryTime))
+        $ filter ((>time) . eToU . Tar.entryTime)
+        $ filterNomalFiles
+        $ entriesToList
+        $ Tar.read
+        $ GZip.decompress contents
+
+hoge p = fmap (\pd -> (takeBaseName (Tar.entryPath p), pd)) $ readPackageDescription p
+
 fetchPackageInfo :: FilePath -> IO [Package]
 fetchPackageInfo tarName = do
     contents <- BL.readFile tarName -- "00-index.tar.gz"
@@ -87,7 +110,7 @@ readPackageDescription entry = fmap pack pd
   where
     pack pd = Package {
         name            = DT.display $ P.pkgName $ PD.package pd
-        , version       = DT.display $ PD.specVersion pd
+        , version       = DT.display $ P.pkgVersion $ PD.package pd
         , license       = PD.license pd
         , homepage      = PD.homepage pd
         , bugReports    = PD.bugReports pd
