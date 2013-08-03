@@ -1,3 +1,10 @@
 .hsenv
 *.hi
 *.o
+*.log
+00-index.tar.gz
+fabfile.pyc
+angel
+Main
+hackage-explorer
+shakespeare-text
