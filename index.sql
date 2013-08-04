@@ -1,0 +1,1 @@
+create index package_updated_at on package (updated_at);
