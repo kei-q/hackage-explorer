@@ -1,0 +1,29 @@
+<!-- packages -->
+<section id="packages"></section>
+<script type="text/template" id="packages_template">
+  {{#items.length}}
+    <section id="page_tag_packages">
+      {{#items:i}}
+        <article class="package">
+          <h1>
+            <a href="http://hackage.haskell.org/package/{{package.value.name}}">
+              {{package.value.name}}
+            </a>
+          </h1>
+          <ul class="tags">
+            {{#tags:j}}
+              <li class="tag {{(lock ? 'lock' : '')}}">
+                {{name}}
+              </li>
+            {{/tags}}
+          </ul>
+          <ul class="info">
+            <li>version: {{package.value.version}}</li>
+            <li>updated_at: {{package.value.updatedAt}}</li>
+          </ul>
+          <p class="synopsis">{{package.value.synopsis}}</p>
+        </article>
+      {{/items}}
+    </section>
+  {{/items.length}}
+</script>

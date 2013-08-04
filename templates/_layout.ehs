@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/pure-min.css" />
+    <link href="/static/main.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <header id="site_header">
+      <h1>
+        <a href="/">hackage-explorer</a>
+      </h1>
+    </header>
+
+    ^{content}
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.2/mustache.min.js"></script>
+    <script src="/static/Ractive.min.js"></script>
+    <script src="/static/main.js"></script>
+  </body>
+</html>

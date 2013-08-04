@@ -1,19 +1,18 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Server(run) where
 
---import Control.Monad.IO.Class (liftIO)
---import Network.Wai.Middleware.Static (static)
+import Control.Monad.IO.Class (liftIO)
+import Network.Wai.Middleware.Static (static)
 
 import Web.Scotty
---import qualified Data.Aeson as JSON
---import Control.Applicative
 
---import qualified Template
---import qualified Query
+import qualified Model.Package
+import qualified View
 
 run :: Int -> IO ()
 run port = scotty port $ do
+    middleware static
+
     get "/" $ do
-        text "hello"
-    get "/test" $ do
-        text "piyo"
+        packages <- liftIO $ Model.Package.getLatestPackages
+        html $ View.index packages
