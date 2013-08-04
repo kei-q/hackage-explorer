@@ -39,6 +39,7 @@ def build():
   # upload build dependencies
   put('../src', '~/', mirror_local_mode=True)
   put('../hackage-explorer.cabal', '~/', mirror_local_mode=True)
+  put('../templates', '~/', mirror_local_mode=True)
 
   # build
   run('cabal install --only-dependencies')
@@ -50,9 +51,10 @@ def build():
   get('dist/build/hackage-explorer/hackage-explorer', '.')
 
 def deploy():
-  sudo('kill `cat hackage-explorer.pid`')
+  put('../static', '~/', mirror_local_mode=True)
   local('chmod 755 hackage-explorer')
   put('hackage-explorer', '~/', mirror_local_mode=True)
+  sudo('kill `cat hackage-explorer.pid`')
   # put('static', '~/')
 
 # def restart():

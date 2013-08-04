@@ -3,8 +3,6 @@ module InitDB (run) where
 
 import           Control.Monad.IO.Class  (liftIO)
 import           Database.Persist
-import Control.Monad.Trans.Resource (runResourceT)
-import Control.Monad.Logger (runNoLoggingT)
 import           Database.Persist.Postgresql
 
 import qualified Data.Text as T
@@ -15,10 +13,7 @@ import qualified Data.HashMap.Lazy as Map
 
 import qualified Distribution.PackageInfo as DP
 import Model
-
-connectionInfo = "host=localhost port=5432 user=hackage dbname=hackage"
-
-runDB action = runNoLoggingT $ runResourceT $ withPostgresqlPool connectionInfo 1 (runSqlPool action)
+import DB (runDB)
 
 run = do
     runDB $ runMigration migrateAll
@@ -32,7 +27,7 @@ run = do
 runAll = runFrom $ read "1900-01-01 00:00:00 UTC"
 
 runFrom latest = do
-    packages <- DP.fetchLatestPackageInfo "../00-index.tar.gz" latest
+    packages <- DP.fetchLatestPackageInfo "00-index.tar.gz" latest
     liftIO $ print $ "start: count " ++ show (Map.size packages)
     runDB $ mapM_ updatePackageInfo $ Map.elems packages
 
