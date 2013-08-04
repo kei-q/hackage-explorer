@@ -1,6 +1,10 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Model.Package where
+module Model.Package
+    ( getLatestPackages
+    , latestPackagesQuery
+    , getPackages'
+    ) where
 
 import Database.Esqueleto
 
@@ -8,18 +12,22 @@ import Data.Aeson ((.=))
 import qualified Data.Aeson as JSON
 
 import qualified Data.List as List
+import Data.Int (Int64)
 
 import Model
 import DB (runDB)
 
+type Page = Int64
+
 instance (JSON.ToJSON a) => JSON.ToJSON (Value a) where
   toJSON (Value a) = JSON.toJSON a
 
-getLatestPackages :: IO [JSON.Value]
-getLatestPackages = getPackages' (latestPackagesQuery 20)
+getLatestPackages :: Page -> IO [JSON.Value]
+getLatestPackages p = getPackages' (latestPackagesQuery p 20)
 
-latestPackagesQuery lim = from $ \p -> do
+latestPackagesQuery page lim = from $ \p -> do
     orderBy [desc (p ^. PackageUpdatedAt)]
+    offset $ (page-1) * lim
     limit lim
     return (p ^. PackageId)
 

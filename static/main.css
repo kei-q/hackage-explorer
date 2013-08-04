@@ -59,6 +59,13 @@ article {
       font-size: 70%;
       margin-right: 1em; }
 
+#page_index header {
+  margin: 10px 0; }
+  #page_index header h1 {
+    width: 100%;
+    background-color: #ededed;
+    text-align: center; }
+
 /* package */
 #page_index #tag_info, #page_tag #tag_info, #page_search_package #tag_info {
   margin: 20px 20px 20px 0;
@@ -74,6 +81,10 @@ article {
     padding: 0; }
   #page_index #tag_info input, #page_tag #tag_info input, #page_search_package #tag_info input {
     width: 80%; }
+#page_index #packages .next_button, #page_tag #packages .next_button, #page_search_package #packages .next_button {
+  display: block;
+  width: 80%;
+  margin: 0 auto; }
 #page_index .package, #page_tag .package, #page_search_package .package {
   background-color: #006e54;
   color: white; }

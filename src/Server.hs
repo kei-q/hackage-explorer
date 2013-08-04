@@ -14,5 +14,10 @@ run port = scotty port $ do
     middleware static
 
     get "/" $ do
-        packages <- liftIO $ Model.Package.getLatestPackages
+        packages <- liftIO $ Model.Package.getLatestPackages 1
         html $ View.index packages
+
+    get "/latest/:page" $ \page -> do
+        packages <- liftIO $ Model.Package.getLatestPackages (read page)
+        json packages
+

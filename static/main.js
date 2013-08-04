@@ -21,37 +21,23 @@
       el: '#packages',
       template: '#packages_template',
       data: {
-        items: data
+        items: data,
+        page: 1
       }
     });
     return packages.on({
-      new_tag: function(event) {
-        var pid, tag,
-          _this = this;
+      load_packages: function(event) {
+        var next_page;
 
-        pid = event.context["package"].key;
-        tag = $(event.node).val();
-        return $.post("/packages/tags/new", JSON.stringify([pid, tag]), function(id) {
-          if (id) {
-            event.context.tags.push({
-              id: id,
-              name: tag,
-              lock: false
-            });
-            return event.node.value = '';
-          }
-        });
-      },
-      delete_tag: function(event, index) {
-        var pkg, ptid,
-          _this = this;
+        next_page = event.context.page + 1;
+        return $.get("/latest/" + next_page, function(data) {
+          var i, v, _i, _len;
 
-        ptid = event.context.id;
-        pkg = packages.data.items[event.index.i];
-        return $.post("/packages/tags/delete", JSON.stringify([ptid]), function(resp) {
-          if (resp === true) {
-            return pkg.tags.splice(index, 1);
+          for (i = _i = 0, _len = data.length; _i < _len; i = ++_i) {
+            v = data[i];
+            event.context.items.push(v);
           }
+          return event.context.page = next_page;
         });
       }
     });

@@ -24,6 +24,7 @@
           <p class="synopsis">{{package.value.synopsis}}</p>
         </article>
       {{/items}}
+      <button class="pure-button next_button" proxy-tap="load_packages">next</button>
     </section>
   {{/items.length}}
 </script>
