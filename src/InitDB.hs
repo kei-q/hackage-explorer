@@ -15,12 +15,9 @@ import qualified Data.HashMap.Lazy as Map
 
 import qualified Distribution.PackageInfo as DP
 import Model
-import qualified Model.Tag
 
---connectionInfo = "host=localhost port=5432 user=hackage dbname=hackage"
 connectionInfo = "host=localhost port=5432 user=hackage dbname=hackage"
 
---run action = runSqlite "hackage.sqlite" action
 runDB action = runNoLoggingT $ runResourceT $ withPostgresqlPool connectionInfo 1 (runSqlPool action)
 
 run = do

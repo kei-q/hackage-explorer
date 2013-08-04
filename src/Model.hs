@@ -33,7 +33,7 @@ Package json
 --    hasBenchmarks Bool
     updatedAt UTCTime
     UniquePackageName name
-    deriving Show
+    deriving Eq Show
 
 Tag json
     name Text
