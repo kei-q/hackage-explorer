@@ -84,6 +84,12 @@ run port = scotty port $ do
         count <- liftIO $ Model.PackageTag.deleteTag key
         json $ count == 1
 
+    -- update tag synopsis
+    post "/tag/synopsis" $ rescueJSON $ do
+        target <- jsonData
+        liftIO $ Model.Tag.updateSynopsis target
+        json True
+
 rescueJSON action = action `rescue` \msg -> do
     liftIO $ print msg
     json False

@@ -64,3 +64,12 @@ search keyword page = runDB $ do
         limit lim
         return (t, countRows')
     return $ map (uncurry TagInfo) ret
+
+-- tag synopsis
+-- =============================================================================
+
+updateSynopsis :: (Key Tag, Text) -> IO ()
+updateSynopsis (tid, synopsis) = runDB $ do
+  update $ \tag -> do
+    set tag [TagSynopsis =. val synopsis]
+    where_ (tag ^. TagId ==. val tid)
