@@ -1,6 +1,6 @@
 # !! coffee -c {file_name}
 
-tagsRactive = (data, root) ->
+tagsRactive = (data, root, params) ->
   tags = new Ractive
     el: '#tags'
     template: '#tags_template'
@@ -12,7 +12,7 @@ tagsRactive = (data, root) ->
   tags.on
     next: (event) ->
       next_page = event.context.page + 1
-      $.get "#{root}/#{next_page}", (data) ->
+      $.get "#{root}/#{next_page}", params, (data) ->
         for v,i in data
           event.context.items.push v
         event.context.page = next_page
@@ -100,7 +100,7 @@ $ ->
     tags_page_view data
   else if $('#page_tag').size() == 1
     tag_page_view data
-  else if $('#page_search_tag').size() == 1
-    tags = tagsRactive(data)
+  else if $('#page_search_tags').size() == 1
+    tags = tagsRactive(data, '/search/tags', {keyword: $.params('keyword')})
   else if $('#page_search_packages').size() == 1
     packages = packageRactive(data, '/search/packages', {keyword: $.params('keyword')} )

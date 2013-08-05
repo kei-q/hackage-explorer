@@ -26,6 +26,13 @@ searchPackages raw = layout $(textFile "templates/searchPackages.ehs")
     page_title :: Text
     page_title = "search_packages"
 
+searchTags :: (JSON.ToJSON a) => a -> Text
+searchTags raw = layout $(textFile "templates/searchTags.ehs")
+  where
+    json = decodeUtf8 $ JSON.encode raw
+    page_title :: Text
+    page_title = "search_tags"
+
 taglist :: (JSON.ToJSON a) => a -> Text
 taglist raw = layout $(textFile "templates/taglist.ehs")
   where

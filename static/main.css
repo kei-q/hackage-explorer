@@ -40,15 +40,15 @@ article {
 /* =============================================================================
   tags
 ==============================================================================*/
-#tags h1 {
+#tags h1, #search_tags h1 {
   display: inline-block; }
-#tags ul {
+#tags ul, #search_tags ul {
   display: inline-block;
   font-size: 80%; }
-#tags .package {
+#tags .package, #search_tags .package {
   margin: 0;
   border: 1px solid black; }
-#tags .next_button {
+#tags .next_button, #search_tags .next_button {
   clear: both;
   display: block;
   width: 80%;

@@ -3,6 +3,7 @@ module Server(run) where
 
 import Control.Monad.IO.Class (liftIO)
 import Network.Wai.Middleware.Static (static)
+import Network.Wai.Middleware.RequestLogger (logStdoutDev)
 import Network.Wai (Application)
 
 import Web.Scotty
@@ -18,6 +19,7 @@ import qualified View
 run :: Int -> IO ()
 run port = scotty port $ do
     middleware static
+    middleware logStdoutDev
 
     get "/" $ do
         packages <- liftIO $ Model.Package.getLatestPackages 1
@@ -55,6 +57,16 @@ run port = scotty port $ do
         keyword <- param "keyword"
         packages <- liftIO $ Model.Package.search (Text.pack keyword) (read page)
         json packages
+
+    get "/search/tags" $ do
+        keyword <- param "keyword"
+        target <- liftIO $ Model.Tag.search (Text.pack keyword) 1
+        html $ View.searchTags target
+
+    get "/search/tags/:page" $ \page -> do
+        keyword <- param "keyword"
+        tags <- liftIO $ Model.Tag.search (Text.pack keyword) (read page)
+        json tags
 
     -- create package_tag
     post "/packages/tags/new" $ rescueJSON $ do

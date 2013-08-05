@@ -2,7 +2,7 @@
 (function() {
   var index_page_view, packageRactive, tag_page_view, tagsRactive, tags_page_view;
 
-  tagsRactive = function(data, root) {
+  tagsRactive = function(data, root, params) {
     var tags;
 
     tags = new Ractive({
@@ -19,7 +19,7 @@
         var next_page;
 
         next_page = event.context.page + 1;
-        return $.get("" + root + "/" + next_page, function(data) {
+        return $.get("" + root + "/" + next_page, params, function(data) {
           var i, v, _i, _len;
 
           for (i = _i = 0, _len = data.length; _i < _len; i = ++_i) {
@@ -151,8 +151,10 @@
       return tags_page_view(data);
     } else if ($('#page_tag').size() === 1) {
       return tag_page_view(data);
-    } else if ($('#page_search_tag').size() === 1) {
-      return tags = tagsRactive(data);
+    } else if ($('#page_search_tags').size() === 1) {
+      return tags = tagsRactive(data, '/search/tags', {
+        keyword: $.params('keyword')
+      });
     } else if ($('#page_search_packages').size() === 1) {
       return packages = packageRactive(data, '/search/packages', {
         keyword: $.params('keyword')
