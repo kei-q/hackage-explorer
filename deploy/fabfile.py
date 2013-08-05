@@ -51,11 +51,12 @@ def build():
   get('dist/build/hackage-explorer/hackage-explorer', '.')
 
 def deploy():
+  local('chmod 755 update_package_description.sh')
+  put('update_package_description.sh', '~/', mirror_local_mode=True)
   put('../static', '~/', mirror_local_mode=True)
   local('chmod 755 hackage-explorer')
-  put('hackage-explorer', '~/', mirror_local_mode=True)
   sudo('kill `cat hackage-explorer.pid`')
-  # put('static', '~/')
+  put('hackage-explorer', '~/', mirror_local_mode=True)
 
 # def restart():
   # run('./hackage-explorer&')

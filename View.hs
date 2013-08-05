@@ -1,4 +1,5 @@
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE OverloadedStrings #-}
 module View where
 
 import Text.Shakespeare
@@ -15,6 +16,9 @@ index :: (JSON.ToJSON a) => a -> Text
 index raw = layout $(textFile "templates/index.ehs")
   where
     json = decodeUtf8 $ JSON.encode raw
+    page_title :: Text
     page_title = "index"
 
-layout content = toLazyText $ $(textFile "templates/_layout.ehs") ()
+layout content = toLazyText $ $(textFile "templates/_layout.ehs") dummyRenderUrl
+
+dummyRenderUrl _ _ = ""

@@ -80,6 +80,19 @@ article {
   }
 }
 
+#page_index {
+  .d1, .d2, .d3 { border: 1px solid black; }
+  header {
+    margin: 10px 0;
+
+    h1 {
+      width: 100%;
+      background-color: #ededed;
+      text-align: center;
+    }
+  }
+}
+
 /* package */
 
 #page_index, #page_tag, #page_search_package {
@@ -99,6 +112,14 @@ article {
       width: 80%;
     }
     height: 100px;
+  }
+
+  #packages {
+    .next_button {
+      display: block;
+      width: 80%;
+      margin: 0 auto;
+    }
   }
 
   .package {
@@ -144,6 +165,15 @@ article {
           width: 80px;
         }
       }
+
+      .new_tag { display: none; }
+      .delete { display: none; }
+    }
+
+    .edit.tags {
+      .new_tag { display: inline; }
+      .delete { display: inline; }
+
     }
 
     .info {

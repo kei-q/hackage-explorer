@@ -2,12 +2,13 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/pure-min.css" />
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
     <link href="/static/main.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
     <header id="site_header">
       <h1>
-        <a href="/">hackage-explorer</a>
+        <a href="/"><i class="icon-camera-retro"></i>hackage-explorer</a>
       </h1>
     </header>
 

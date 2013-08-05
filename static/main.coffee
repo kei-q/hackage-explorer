@@ -16,23 +16,23 @@ packageRactive = (data)->
       page: 1
 
   packages.on
-    # new_tag: (event) ->
-    #   pid = event.context.package.key
-    #   tag = $(event.node).val()
-    #   $.post "/packages/tags/new", JSON.stringify([pid,tag]), (id) =>
-    #     if id
-    #       event.context.tags.push
-    #         id: id
-    #         name: tag
-    #         lock: false
-    #       event.node.value = ''
+    new_tag: (event) ->
+      pid = event.context.package.key
+      tag = $(event.node).val()
+      $.post "/packages/tags/new", JSON.stringify([pid,tag]), (id) =>
+        if id
+          event.context.tags.push
+            id: id
+            name: tag
+            lock: false
+          event.node.value = ''
 
-    # delete_tag: (event, index) ->
-    #   ptid = event.context.id
-    #   pkg = packages.data.items[event.index.i]
-    #   $.post "/packages/tags/delete", JSON.stringify([ptid]), (resp) =>
-    #     if resp == true
-    #       pkg.tags.splice(index, 1)
+    delete_tag: (event, index) ->
+      ptid = event.context.id
+      pkg = packages.data.items[event.index.i]
+      $.post "/packages/tags/delete", JSON.stringify([ptid]), (resp) =>
+        if resp == true
+          pkg.tags.splice(index, 1)
 
     load_packages: (event) ->
       next_page = event.context.page + 1
@@ -40,6 +40,11 @@ packageRactive = (data)->
         for v,i in data
           event.context.items.push v
         event.context.page = next_page
+
+    edit: (event) ->
+      path = event.keypath + '.edit'
+      @set(path, !@get(path))
+      console.log event
 
 # data[0]: recent_tags
 # data[1]: tags

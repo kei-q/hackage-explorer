@@ -15,7 +15,7 @@ build-type:          Simple
 cabal-version:       >=1.8
 
 executable hackage-explorer
-  hs-source-dirs: src
+  -- hs-source-dirs: src
   main-is: Main.hs
   -- other-modules:
   build-depends:
@@ -23,6 +23,9 @@ executable hackage-explorer
     text ==0.11.*,
     time ==1.4.*,
     filepath ==1.3.*,
+
+    -- development
+    wai-handler-devel ==1.3.0.6,
 
     -- package
     Cabal ==1.16.*,

@@ -1,5 +1,4 @@
 <!-- packages -->
-<section id="packages"></section>
 <script type="text/template" id="packages_template">
   {{#items.length}}
     <section id="page_tag_packages">
@@ -10,13 +9,20 @@
               {{package.value.name}}
             </a>
           </h1>
-          <ul class="tags">
+
+          <ul class="tags {{(edit ? 'edit' : '')}}">
             {{#tags:j}}
               <li class="tag {{(lock ? 'lock' : '')}}">
                 {{name}}
+                {{^lock}}
+                  <button class="delete" proxy-tap="delete_tag:{{j}}">del</button>
+                {{/lock}}
               </li>
             {{/tags}}
+            <li class="new_tag"><input proxy-enter-change="new_tag" type="text" placeholder="new_tag"/></li>
+            <li class="toggle_edit"><button proxy-tap="edit"><i class="icon-gear"></i></button></li>
           </ul>
+
           <ul class="info">
             <li>version: {{package.value.version}}</li>
             <li>updated_at: {{package.value.updatedAt}}</li>

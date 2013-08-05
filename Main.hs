@@ -9,5 +9,5 @@ main :: IO ()
 main = do
     args <- getArgs
     if null args
-      then Server.run 3000
-      else InitDB.run
+        then Server.run 3000
+        else InitDB.run
