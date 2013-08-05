@@ -13,7 +13,7 @@
           <ul class="tags {{(edit ? 'edit' : '')}}">
             {{#tags:j}}
               <li class="tag {{(lock ? 'lock' : '')}}">
-                {{name}}
+                <a href="/tags/{{name}}">{{name}}</a>
                 {{^lock}}
                   <button class="delete" proxy-tap="delete_tag:{{j}}">del</button>
                 {{/lock}}
