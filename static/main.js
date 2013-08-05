@@ -32,14 +32,17 @@
     });
   };
 
-  packageRactive = function(data, root, params) {
+  packageRactive = function(data, root, params, el) {
     var packages;
 
     if (params == null) {
       params = null;
     }
+    if (el == null) {
+      el = '#packages';
+    }
     packages = new Ractive({
-      el: '#packages',
+      el: el,
       template: '#packages_template',
       data: {
         items: data,
@@ -101,7 +104,8 @@
   };
 
   index_page_view = function(data) {
-    return packageRactive(data, '/latest');
+    packageRactive(data[0], '/updated', null, '#updated_packages');
+    return packageRactive(data[1], '/latest');
   };
 
   tags_page_view = function(data) {

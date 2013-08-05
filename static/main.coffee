@@ -17,9 +17,9 @@ tagsRactive = (data, root, params) ->
           event.context.items.push v
         event.context.page = next_page
 
-packageRactive = (data, root, params = null)->
+packageRactive = (data, root, params = null, el = '#packages') ->
   packages = new Ractive
-    el: '#packages'
+    el: el
     template: '#packages_template'
     data:
       items: data
@@ -59,7 +59,8 @@ packageRactive = (data, root, params = null)->
 # data[0]: recent_tags
 # data[1]: tags
 index_page_view = (data) ->
-  packageRactive(data, '/latest')
+  packageRactive(data[0], '/updated', null, '#updated_packages')
+  packageRactive(data[1], '/latest')
 
 tags_page_view = (data) ->
   # tag

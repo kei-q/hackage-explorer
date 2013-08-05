@@ -16,12 +16,16 @@
   </div>
 </div>
 
-<header>
-  <h1>最新package</h1>
-</header>
+<h1 class="sep">最近tagが更新されたpackage</h1>
+
+<section id="updated_packages"></section>
+
+<h1 class="sep">最新package</h1>
+
 <section id="packages"></section>
-^{partial_package}
 </section>
+
+^{partial_package}
 
 <script type="text/javascript">
   data = #{json}

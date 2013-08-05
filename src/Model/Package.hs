@@ -2,6 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Model.Package
     ( getPackages
+    , getUpdated
     , getLatestPackages
     , latestPackagesQuery
     , search
@@ -39,6 +40,16 @@ getPackagesQuery tagName page lim = from $ \(p,pt,t) -> do
     return (p ^. PackageId)
 
 
+
+getUpdated :: Page -> IO [JSON.Value]
+getUpdated p = getPackages' (updatedQuery p 10)
+
+updatedQuery page lim = from $ \(p `InnerJoin` pt) -> do
+    on (pt ^. PackageTagPackage ==. p ^. PackageId)
+    orderBy [desc (pt ^. PackageTagCreatedAt)]
+    offset $ (page-1) * lim
+    limit lim
+    return (p ^. PackageId)
 
 getLatestPackages :: Page -> IO [JSON.Value]
 getLatestPackages p = getPackages' (latestPackagesQuery p 10)

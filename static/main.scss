@@ -43,14 +43,12 @@ article {
     display: inline-block;
   }
 
-  header {
-    margin: 10px 0;
-
-    h1 {
-      width: 100%;
-      background-color: #ededed;
-      text-align: center;
-    }
+  h1.sep {
+    width: 100%;
+    background-color: #4c6cb3;
+    color: white;
+    text-align: center;
+    margin-top: 20px;
   }
 }
 
@@ -99,7 +97,7 @@ article {
     height: 100px;
   }
 
-  #packages {
+  #packages, #updated_packages {
     .next_button {
       display: block;
       width: 80%;
