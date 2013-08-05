@@ -13,14 +13,15 @@
     });
   };
 
-  packageRactive = function(data) {
+  packageRactive = function(data, root) {
     var packages;
     packages = new Ractive({
       el: '#packages',
       template: '#packages_template',
       data: {
         items: data,
-        page: 1
+        page: 1,
+        root: root
       }
     });
     return packages.on({
@@ -54,7 +55,7 @@
       load_packages: function(event) {
         var next_page;
         next_page = event.context.page + 1;
-        return $.get("/latest/" + next_page, function(data) {
+        return $.get("" + root + "/" + next_page, function(data) {
           var i, v, _i, _len;
           for (i = _i = 0, _len = data.length; _i < _len; i = ++_i) {
             v = data[i];
@@ -66,14 +67,13 @@
       edit: function(event) {
         var path;
         path = event.keypath + '.edit';
-        this.set(path, !this.get(path));
-        return console.log(event);
+        return this.set(path, !this.get(path));
       }
     });
   };
 
   index_page_view = function(data) {
-    return packageRactive(data);
+    return packageRactive(data, '/latest');
   };
 
   tag_page_view = function(data) {
@@ -100,7 +100,7 @@
         });
       }
     });
-    return packages = packageRactive(data[1]);
+    return packages = packageRactive(data[1], "/tags/" + data[0].value.name);
   };
 
   $(function() {

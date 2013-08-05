@@ -7,6 +7,10 @@ import Network.Wai (Application)
 
 import Web.Scotty
 
+import Control.Applicative
+import qualified Data.Text as Text
+
+import qualified Model.Tag
 import qualified Model.Package
 import qualified Model.PackageTag
 import qualified View
@@ -22,6 +26,16 @@ run port = scotty port $ do
 
     get "/latest/:page" $ \page -> do
         packages <- liftIO $ Model.Package.getLatestPackages (read page)
+        json packages
+
+    get "/tags/:tag" $ \key -> do
+        let key' = Text.pack key
+        target <- liftIO $ (,) <$> Model.Tag.getTag key' <*> Model.Package.getPackages key' 1
+        html $ View.tag target
+
+    get "/tags/:tag/:page" $ \tag page -> do
+        let tag' = Text.pack tag
+        packages <- liftIO $ Model.Package.getPackages tag' (read page)
         json packages
 
     -- create package_tag

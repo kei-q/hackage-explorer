@@ -1,0 +1,24 @@
+<section id="page_#{page_title}">
+
+<!-- tag_info -->
+<section id="tag_info"></section>
+<script type="text/template" id="tag_template">
+  <h1>{{value.name}}</h1>
+  {{^editing}}
+    <p class="synopsis" proxy-dblclick="edit">{{value.synopsis}}{{^value.synopsis}}解説募集中{{/value.synopsis}} (double clickで編集)</p>
+  {{/editing}}
+  {{#editing}}
+    <div>
+      <input intro="select" class="edit" value="{{value.synopsis}}" proxy-blur-enter="submit" />
+    </div>
+  {{/editing}}
+</script>
+
+<section id="packages"></section>
+^{partial_package}
+
+</section>
+
+<script type="text/javascript">
+  data = #{json}
+</script>

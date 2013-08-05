@@ -7,13 +7,14 @@ tagsRactive = (data) ->
     data:
       items: data
 
-packageRactive = (data)->
+packageRactive = (data, root)->
   packages = new Ractive
     el: '#packages'
     template: '#packages_template'
     data:
       items: data
       page: 1
+      root: root
 
   packages.on
     new_tag: (event) ->
@@ -36,7 +37,7 @@ packageRactive = (data)->
 
     load_packages: (event) ->
       next_page = event.context.page + 1
-      $.get "/latest/#{next_page}", (data) ->
+      $.get "#{root}/#{next_page}", (data) ->
         for v,i in data
           event.context.items.push v
         event.context.page = next_page
@@ -44,12 +45,11 @@ packageRactive = (data)->
     edit: (event) ->
       path = event.keypath + '.edit'
       @set(path, !@get(path))
-      console.log event
 
 # data[0]: recent_tags
 # data[1]: tags
 index_page_view = (data) ->
-  packageRactive(data)
+  packageRactive(data, '/latest')
 
 tag_page_view = (data) ->
   # tag
@@ -73,7 +73,7 @@ tag_page_view = (data) ->
 
   # packages
   # ============================================================================
-  packages = packageRactive(data[1])
+  packages = packageRactive(data[1], "/tags/#{data[0].value.name}")
 
 $ ->
   if $('#page_index').size() == 1

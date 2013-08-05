@@ -19,6 +19,13 @@ index raw = layout $(textFile "templates/index.ehs")
     page_title :: Text
     page_title = "index"
 
+tag :: (JSON.ToJSON a) => a -> Text
+tag raw = layout $(textFile "templates/tag.ehs")
+  where
+    json = decodeUtf8 $ JSON.encode raw
+    page_title :: Text
+    page_title = "tag"
+
 layout content = toLazyText $ $(textFile "templates/_layout.ehs") dummyRenderUrl
 
 dummyRenderUrl _ _ = ""

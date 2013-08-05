@@ -1,29 +1,19 @@
-{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Model.Tag where
 
 import Database.Esqueleto
 import qualified Data.Aeson as JSON
 import Model
-import GHC.Generics (Generic)
+import Data.Text (Text)
 
 import DB (runDB)
 
-data TagInfo = TagInfo
-  { tag :: Entity Tag
-  , count :: Value Int
-  } deriving Generic
+instance (JSON.ToJSON a) => JSON.ToJSON (Value a) where
+  toJSON (Value a) = JSON.toJSON a
 
-instance JSON.ToJSON TagInfo
-
-allTags :: IO [TagInfo]
-allTags = runDB $ do
-    ret <- select $ from $ \(pt `InnerJoin` t) -> do
-        on (pt ^. PackageTagTag ==. t ^. TagId)
-        groupBy $ t ^. TagId
-        let c = Database.Esqueleto.count (t ^. TagId)
-        orderBy [desc c]
-        limit 20
-        return (t, c)
-    return $ map (uncurry TagInfo) ret
-
+getTag :: Text -> IO (Entity Tag)
+getTag tagName = runDB $ do
+  tags <- select $ from $ \t -> do
+    where_ (t ^. TagName ==. val tagName)
+    return t
+  return $ head tags -- TODO: partial

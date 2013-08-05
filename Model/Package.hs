@@ -1,7 +1,8 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Model.Package
-    ( getLatestPackages
+    ( getPackages
+    , getLatestPackages
     , latestPackagesQuery
     , getPackages'
     ) where
@@ -12,6 +13,7 @@ import Data.Aeson ((.=))
 import qualified Data.Aeson as JSON
 
 import qualified Data.List as List
+import Data.Text (Text)
 import Data.Int (Int64)
 
 import Model
@@ -22,14 +24,30 @@ type Page = Int64
 instance (JSON.ToJSON a) => JSON.ToJSON (Value a) where
   toJSON (Value a) = JSON.toJSON a
 
+getPackages :: Text -> Page -> IO [JSON.Value]
+getPackages t p = getPackages' (getPackagesQuery t p 10)
+
+getPackagesQuery tagName page lim = from $ \(p,pt,t) -> do
+    where_ (t ^. TagName ==. val tagName)
+    where_ (pt ^. PackageTagTag ==. t ^. TagId)
+    where_ (pt ^. PackageTagPackage ==. p ^. PackageId)
+    orderBy [desc (p ^. PackageUpdatedAt)]
+    offset $ (page-1) * lim
+    limit lim
+    return (p ^. PackageId)
+
+
+
 getLatestPackages :: Page -> IO [JSON.Value]
-getLatestPackages p = getPackages' (latestPackagesQuery p 20)
+getLatestPackages p = getPackages' (latestPackagesQuery p 10)
 
 latestPackagesQuery page lim = from $ \p -> do
     orderBy [desc (p ^. PackageUpdatedAt)]
     offset $ (page-1) * lim
     limit lim
     return (p ^. PackageId)
+
+
 
 getPackages' packagesQuery = runDB $ do
   ret <- select $ from $ \(p `InnerJoin` pt `InnerJoin` t) -> do
