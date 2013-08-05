@@ -2,7 +2,12 @@
 
 <div class="menu">
   <div class="menu_block"><p><a href="/taglist">すべてのtag</a></p></div>
-  <div class="menu_block"><p>hoge</p></div>
+  <div class="menu_block">
+    <form action="/search/packages" method="GET">
+      <input name="keyword" placeholder="package検索" />
+      <input type="submit" value="検索" />
+    </form>
+  </div>
   <div class="menu_block"><p>hoge</p></div>
 </div>
 

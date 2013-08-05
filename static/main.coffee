@@ -17,7 +17,7 @@ tagsRactive = (data, root) ->
           event.context.items.push v
         event.context.page = next_page
 
-packageRactive = (data, root)->
+packageRactive = (data, root, params = null)->
   packages = new Ractive
     el: '#packages'
     template: '#packages_template'
@@ -47,7 +47,7 @@ packageRactive = (data, root)->
 
     load_packages: (event) ->
       next_page = event.context.page + 1
-      $.get "#{root}/#{next_page}", (data) ->
+      $.get "#{root}/#{next_page}", params, (data) ->
         for v,i in data
           event.context.items.push v
         event.context.page = next_page
@@ -91,6 +91,9 @@ tag_page_view = (data) ->
   packages = packageRactive(data[1], "/tags/#{data[0].value.name}")
 
 $ ->
+  $.params = (param_name) ->
+    new RegExp("[\\?&]#{param_name}=([^&#]*)").exec(window.location.href)[1]
+
   if $('#page_index').size() == 1
     index_page_view data
   else if $('#page_taglist').size() == 1
@@ -99,5 +102,5 @@ $ ->
     tag_page_view data
   else if $('#page_search_tag').size() == 1
     tags = tagsRactive(data)
-  else if $('#page_search_package').size() == 1
-    packages = packageRactive(data)
+  else if $('#page_search_packages').size() == 1
+    packages = packageRactive(data, '/search/packages', {keyword: $.params('keyword')} )

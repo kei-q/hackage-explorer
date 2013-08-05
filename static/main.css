@@ -55,7 +55,7 @@ article {
   margin: 0 auto; }
 
 /* package */
-#page_index #tag_info, #page_tag #tag_info, #page_search_package #tag_info {
+#page_index #tag_info, #page_tag #tag_info, #page_search_packages #tag_info {
   margin: 20px 20px 20px 0;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
@@ -63,20 +63,20 @@ article {
   background-color: #4c6cb3;
   color: white;
   height: 100px; }
-  #page_index #tag_info p, #page_tag #tag_info p, #page_search_package #tag_info p {
+  #page_index #tag_info p, #page_tag #tag_info p, #page_search_packages #tag_info p {
     font-size: 90%;
     margin: 0 0 0 1em;
     padding: 0; }
-  #page_index #tag_info input, #page_tag #tag_info input, #page_search_package #tag_info input {
+  #page_index #tag_info input, #page_tag #tag_info input, #page_search_packages #tag_info input {
     width: 80%; }
-#page_index #packages .next_button, #page_tag #packages .next_button, #page_search_package #packages .next_button {
+#page_index #packages .next_button, #page_tag #packages .next_button, #page_search_packages #packages .next_button {
   display: block;
   width: 80%;
   margin: 0 auto; }
-#page_index .package, #page_tag .package, #page_search_package .package {
+#page_index .package, #page_tag .package, #page_search_packages .package {
   background-color: #006e54;
   color: white; }
-  #page_index .package h1, #page_tag .package h1, #page_search_package .package h1 {
+  #page_index .package h1, #page_tag .package h1, #page_search_packages .package h1 {
     border-bottom-right-radius: 8px;
     border-top-left-radius: 8px;
     display: inline;
@@ -85,43 +85,43 @@ article {
     float: left;
     background-color: white;
     color: #006e54; }
-  #page_index .package .tags, #page_tag .package .tags, #page_search_package .package .tags {
+  #page_index .package .tags, #page_tag .package .tags, #page_search_packages .package .tags {
     float: left;
     margin: 0;
     padding: 0; }
-    #page_index .package .tags li, #page_tag .package .tags li, #page_search_package .package .tags li {
+    #page_index .package .tags li, #page_tag .package .tags li, #page_search_packages .package .tags li {
       display: inline;
       font-size: 70%;
       margin: 4px;
       padding: 4px;
       background-color: #4c6cb3; }
-      #page_index .package .tags li.lock, #page_tag .package .tags li.lock, #page_search_package .package .tags li.lock {
+      #page_index .package .tags li.lock, #page_tag .package .tags li.lock, #page_search_packages .package .tags li.lock {
         background-color: #c63; }
-      #page_index .package .tags li a, #page_tag .package .tags li a, #page_search_package .package .tags li a {
+      #page_index .package .tags li a, #page_tag .package .tags li a, #page_search_packages .package .tags li a {
         color: white; }
-      #page_index .package .tags li .delete, #page_tag .package .tags li .delete, #page_search_package .package .tags li .delete {
+      #page_index .package .tags li .delete, #page_tag .package .tags li .delete, #page_search_packages .package .tags li .delete {
         height: 20px; }
-      #page_index .package .tags li input, #page_tag .package .tags li input, #page_search_package .package .tags li input {
+      #page_index .package .tags li input, #page_tag .package .tags li input, #page_search_packages .package .tags li input {
         width: 80px; }
-    #page_index .package .tags .new_tag, #page_tag .package .tags .new_tag, #page_search_package .package .tags .new_tag {
+    #page_index .package .tags .new_tag, #page_tag .package .tags .new_tag, #page_search_packages .package .tags .new_tag {
       display: none; }
-    #page_index .package .tags .delete, #page_tag .package .tags .delete, #page_search_package .package .tags .delete {
+    #page_index .package .tags .delete, #page_tag .package .tags .delete, #page_search_packages .package .tags .delete {
       display: none; }
-  #page_index .package .edit.tags .new_tag, #page_tag .package .edit.tags .new_tag, #page_search_package .package .edit.tags .new_tag {
+  #page_index .package .edit.tags .new_tag, #page_tag .package .edit.tags .new_tag, #page_search_packages .package .edit.tags .new_tag {
     display: inline; }
-  #page_index .package .edit.tags .delete, #page_tag .package .edit.tags .delete, #page_search_package .package .edit.tags .delete {
+  #page_index .package .edit.tags .delete, #page_tag .package .edit.tags .delete, #page_search_packages .package .edit.tags .delete {
     display: inline; }
-  #page_index .package .info, #page_tag .package .info, #page_search_package .package .info {
+  #page_index .package .info, #page_tag .package .info, #page_search_packages .package .info {
     float: right;
     margin: 0;
     padding: 0; }
-    #page_index .package .info li, #page_tag .package .info li, #page_search_package .package .info li {
+    #page_index .package .info li, #page_tag .package .info li, #page_search_packages .package .info li {
       font-size: 80%;
       margin: 0;
       padding: 0;
       margin-right: 1em;
       list-style-type: none; }
-  #page_index .package .synopsis, #page_tag .package .synopsis, #page_search_package .package .synopsis {
+  #page_index .package .synopsis, #page_tag .package .synopsis, #page_search_packages .package .synopsis {
     clear: both;
     font-size: 90%;
     padding: 8px;

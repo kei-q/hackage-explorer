@@ -4,10 +4,12 @@ module Model.Package
     ( getPackages
     , getLatestPackages
     , latestPackagesQuery
+    , search
     , getPackages'
     ) where
 
 import Database.Esqueleto
+import Database.Esqueleto.Internal.Sql (unsafeSqlBinOp)
 
 import Data.Aeson ((.=))
 import qualified Data.Aeson as JSON
@@ -46,6 +48,23 @@ latestPackagesQuery page lim = from $ \p -> do
     offset $ (page-1) * lim
     limit lim
     return (p ^. PackageId)
+
+
+
+(@@.) :: SqlExpr (Value a) -> SqlExpr (Value a) -> SqlExpr (Value Bool)
+(@@.) = unsafeSqlBinOp " @@ "
+
+search :: Text -> Page -> IO [JSON.Value]
+search keyword p = getPackages' (searchQuery keyword p 10)
+
+searchQuery keyword page lim = from $ \p -> do
+    let k = val keyword
+    where_ $ (p ^. PackageName @@. k) ||. (p ^. PackageSynopsis @@. k)
+    orderBy [desc (p ^. PackageUpdatedAt)]
+    offset $ (page-1) * lim
+    limit lim
+    return (p ^. PackageId)
+
 
 
 

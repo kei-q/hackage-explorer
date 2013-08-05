@@ -55,7 +55,7 @@ def deploy():
   put('update_package_description.sh', '~/', mirror_local_mode=True)
   put('../static', '~/', mirror_local_mode=True)
   local('chmod 755 hackage-explorer')
-  sudo('kill `cat hackage-explorer.pid`')
+  # sudo('kill `cat hackage-explorer.pid`')
   put('hackage-explorer', '~/', mirror_local_mode=True)
 
 # def restart():

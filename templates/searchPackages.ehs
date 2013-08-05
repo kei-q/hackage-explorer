@@ -1,0 +1,10 @@
+<section id="page_#{page_title}">
+
+<section id="packages"></section>
+^{partial_package}
+
+</section>
+
+<script type="text/javascript">
+  data = #{json}
+</script>

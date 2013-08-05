@@ -45,6 +45,17 @@ run port = scotty port $ do
         packages <- liftIO $ Model.Package.getPackages tag' (read page)
         json packages
 
+    -- search
+    get "/search/packages" $ do
+        keyword <- param "keyword"
+        target <- liftIO $ Model.Package.search (Text.pack keyword) 1
+        html $ View.searchPackages target
+
+    get "/search/packages/:page" $ \page -> do
+        keyword <- param "keyword"
+        packages <- liftIO $ Model.Package.search (Text.pack keyword) (read page)
+        json packages
+
     -- create package_tag
     post "/packages/tags/new" $ rescueJSON $ do
         target <- jsonData
