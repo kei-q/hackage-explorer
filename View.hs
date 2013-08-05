@@ -19,6 +19,13 @@ index raw = layout $(textFile "templates/index.ehs")
     page_title :: Text
     page_title = "index"
 
+taglist :: (JSON.ToJSON a) => a -> Text
+taglist raw = layout $(textFile "templates/taglist.ehs")
+  where
+    json = decodeUtf8 $ JSON.encode raw
+    page_title :: Text
+    page_title = "taglist"
+
 tag :: (JSON.ToJSON a) => a -> Text
 tag raw = layout $(textFile "templates/tag.ehs")
   where

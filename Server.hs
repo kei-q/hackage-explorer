@@ -21,12 +21,19 @@ run port = scotty port $ do
 
     get "/" $ do
         packages <- liftIO $ Model.Package.getLatestPackages 1
-        liftIO $ print $ head packages
         html $ View.index packages
 
     get "/latest/:page" $ \page -> do
         packages <- liftIO $ Model.Package.getLatestPackages (read page)
         json packages
+
+    get "/taglist" $ do
+        tags <- liftIO $ Model.Tag.allTags 1
+        html $ View.taglist tags
+
+    get "/taglist/:page" $ \page -> do
+        tags <- liftIO $ Model.Tag.allTags (read page)
+        json tags
 
     get "/tags/:tag" $ \key -> do
         let key' = Text.pack key

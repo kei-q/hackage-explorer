@@ -1,0 +1,30 @@
+<section id="page_#{page_title}">
+
+<!-- tags -->
+<section id="tags"></section>
+
+<script type="text/template" id="tags_template">
+  {{#items.length}}
+    <article class="tag">
+      {{#items:i}}
+        <article class="package">
+          <h1>
+            <a href="/tags/{{tag.value.name}}">
+              {{tag.value.name}} <span class="count">({{count}})</span>
+            </a>
+          </h1>
+          <ul>
+            <li>{{tag.value.synopsis}}{{^tag.value.synopsis}}説明募集中{{/tag.value.synopsis}}</li>
+          </ul>
+        </article>
+      {{/items}}
+      <button class="pure-button next_button" proxy-tap="next">next</button>
+    </article>
+  {{/items.length}}
+</script>
+
+</section>
+
+<script type="text/javascript">
+  data = #{json}
+</script>

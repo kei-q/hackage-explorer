@@ -21,52 +21,38 @@ article {
     #site_header h1 a {
       color: #fef4f4; }
 
-/* category */
-#tags .tag {
-  clear: both;
-  margin-bottom: 10px; }
-  #tags .tag a {
-    margin: 0;
-    padding: 0; }
-  #tags .tag h1 {
-    font-size: 20px;
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-    border: 1px solid #4c6cb3;
-    display: inline;
-    padding: 4px 0 0 4px;
-    height: 34px;
-    /* 40 - 4 - 1*2 */
-    width: 30%;
-    float: left;
-    background-color: white;
-    color: #4c6cb3; }
-    #tags .tag h1 .count {
-      font-size: 70%; }
-  #tags .tag ul {
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border: 1px solid #4c6cb3;
-    background-color: #4c6cb3;
-    color: white;
-    height: 40px;
-    width: 60%;
-    float: left;
-    margin: 0;
-    padding: 0; }
-    #tags .tag ul li {
-      display: inline;
-      font-size: 70%;
-      margin-right: 1em; }
-
-#page_index .d1, #page_index .d2, #page_index .d3 {
-  border: 1px solid black; }
+/* =============================================================================
+  index
+==============================================================================*/
+#page_index .menu {
+  max-width: 600px;
+  margin: 0 auto; }
+#page_index .menu_block {
+  width: 32%;
+  display: inline-block; }
 #page_index header {
   margin: 10px 0; }
   #page_index header h1 {
     width: 100%;
     background-color: #ededed;
     text-align: center; }
+
+/* =============================================================================
+  tags
+==============================================================================*/
+#tags h1 {
+  display: inline-block; }
+#tags ul {
+  display: inline-block;
+  font-size: 80%; }
+#tags .package {
+  margin: 0;
+  border: 1px solid black; }
+#tags .next_button {
+  clear: both;
+  display: block;
+  width: 80%;
+  margin: 0 auto; }
 
 /* package */
 #page_index #tag_info, #page_tag #tag_info, #page_search_package #tag_info {

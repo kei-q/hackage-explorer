@@ -1,11 +1,21 @@
 # !! coffee -c {file_name}
 
-tagsRactive = (data) ->
+tagsRactive = (data, root) ->
   tags = new Ractive
     el: '#tags'
     template: '#tags_template'
     data:
       items: data
+      page: 1
+      root: root
+
+  tags.on
+    next: (event) ->
+      next_page = event.context.page + 1
+      $.get "#{root}/#{next_page}", (data) ->
+        for v,i in data
+          event.context.items.push v
+        event.context.page = next_page
 
 packageRactive = (data, root)->
   packages = new Ractive
@@ -51,6 +61,11 @@ packageRactive = (data, root)->
 index_page_view = (data) ->
   packageRactive(data, '/latest')
 
+tags_page_view = (data) ->
+  # tag
+  # ============================================================================
+  tags = tagsRactive(data, '/taglist')
+
 tag_page_view = (data) ->
   # tag
   # ============================================================================
@@ -78,6 +93,8 @@ tag_page_view = (data) ->
 $ ->
   if $('#page_index').size() == 1
     index_page_view data
+  else if $('#page_taglist').size() == 1
+    tags_page_view data
   else if $('#page_tag').size() == 1
     tag_page_view data
   else if $('#page_search_tag').size() == 1
