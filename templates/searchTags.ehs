@@ -19,4 +19,10 @@
       <button class="pure-button next_button" proxy-tap="next">next</button>
     </article>
   {{/items.length}}
+
+  {{^items.length}}
+    <article class="tag">
+      <p>該当するtagが見つかりませんでした。</p>
+    </article>
+  {{/items.length}}
 </script>

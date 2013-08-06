@@ -7,7 +7,7 @@
   {{/editing}}
   {{#editing}}
     <div>
-      <input intro="select" class="edit" value="{{value.synopsis}}" proxy-blur-enter="submit" />
+      <input intro="select" class="edit" value="{{value.synopsis}}" proxy-blur-enter="submit" maxlength="1024"/>
     </div>
   {{/editing}}
 </script>

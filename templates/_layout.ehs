@@ -8,9 +8,33 @@
   <body id="page_#{page_title}">
     <header id="site_header">
       <h1>
-        <a href="/"><i class="icon-camera-retro"></i>hackage-explorer</a>
+        <a href="/"><i class="icon-tags"></i> hackage-explorer</a>
       </h1>
     </header>
+
+    <div id="global_menu">
+      <div class="menu_block">
+        <p>
+          <i class="icon-tags"></i>
+          <a href="/taglist">すべてのtag</a>
+        </p>
+      </div>
+      <div class="menu_block">
+        <form action="/search/packages" method="GET">
+          <i class="icon-archive"></i>
+          <input name="keyword" placeholder="package検索" size="20" />
+          <input type="submit" value="検索" />
+        </form>
+      </div>
+      <div class="menu_block">
+        <form action="/search/tags" method="GET">
+          <i class="icon-tag"></i>
+          <input name="keyword" placeholder="tag検索" size="20" />
+          <input type="submit" value="検索" />
+        </form>
+      </div>
+    </div>
+
 
     ^{content}
 

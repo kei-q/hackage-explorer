@@ -19,7 +19,7 @@
                 {{/lock}}
               </li>
             {{/tags}}
-            <li class="new_tag"><input proxy-enter-change="new_tag" type="text" placeholder="new_tag"/></li>
+            <li class="new_tag"><input proxy-enter-change="new_tag" type="text" placeholder="new_tag" maxlength="32"/></li>
             <li class="toggle_edit"><button proxy-tap="edit"><i class="icon-gear"></i></button></li>
           </ul>
 
@@ -30,7 +30,16 @@
           <p class="synopsis">{{package.value.synopsis}}</p>
         </article>
       {{/items}}
-      <button class="pure-button next_button" proxy-tap="load_packages">next</button>
+      <button class="pure-button next_button" proxy-tap="load_packages">
+        <i class="icon-spinner"></i>
+        next
+      </button>
+    </section>
+  {{/items.length}}
+
+  {{^items.length}}
+    <section id="page_tag_packages">
+      <p>該当するpackageが見つかりませんでした。</p>
     </section>
   {{/items.length}}
 </script>
