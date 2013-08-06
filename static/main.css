@@ -48,19 +48,24 @@ p {
 /* =============================================================================
   tags
 ==============================================================================*/
-#tags h1, #search_tags h1 {
-  display: inline-block; }
-#tags ul, #search_tags ul {
-  display: inline-block;
-  font-size: 80%; }
 #tags .package, #search_tags .package {
-  margin: 0;
-  border: 1px solid black; }
+  margin-bottom: 16px; }
+  #tags .package h1, #search_tags .package h1 {
+    display: inline-block;
+    background-color: #4b75b9;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 12px; }
+    #tags .package h1 a, #search_tags .package h1 a {
+      color: white; }
+  #tags .package ul, #search_tags .package ul {
+    display: inline-block;
+    font-size: 80%; }
 #tags .next_button, #search_tags .next_button {
   clear: both;
   display: block;
   width: 80%;
-  margin: 0 auto; }
+  margin: 10px auto; }
 
 /* package */
 #page_index #tag_info, #page_tag #tag_info, #page_search_packages #tag_info {

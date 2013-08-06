@@ -71,22 +71,29 @@ p {
 ==============================================================================*/
 
 #tags, #search_tags {
-  h1 {
-    display: inline-block;
-  }
-  ul {
-    display: inline-block;
-    font-size: 80%;
-  }
   .package {
-    margin: 0;
-    border: 1px solid black;
+    margin-bottom: 16px;
+
+    h1 {
+      display: inline-block;
+      background-color: $base_color;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+      padding: 12px;
+      a {
+        color: white;
+      }
+    }
+    ul {
+      display: inline-block;
+      font-size: 80%;
+    }
   }
   .next_button {
     clear: both;
     display: block;
     width: 80%;
-    margin: 0 auto;
+    margin: 10px auto;
   }
 }
 
@@ -138,6 +145,7 @@ p {
       float: left;
       margin: 0;
       padding: 0;
+
       li {
         display: inline;
         font-size: 80%;
