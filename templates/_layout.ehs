@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
     <link href="/static/main.css" rel="stylesheet" type="text/css" />
   </head>
-  <body>
+  <body id="page_#{page_title}">
     <header id="site_header">
       <h1>
         <a href="/"><i class="icon-camera-retro"></i>hackage-explorer</a>
@@ -20,6 +20,8 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.2/mustache.min.js"></script>
     <script src="/static/Ractive.min.js"></script>
     <script src="/static/main.js"></script>
+
+    <script type="text/javascript"> data = #{json} </script>
 
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

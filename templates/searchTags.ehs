@@ -1,5 +1,3 @@
-<section id="page_#{page_title}">
-
 <!-- tags -->
 <section id="tags"></section>
 
@@ -21,10 +19,4 @@
       <button class="pure-button next_button" proxy-tap="next">next</button>
     </article>
   {{/items.length}}
-</script>
-
-</section>
-
-<script type="text/javascript">
-  data = #{json}
 </script>

@@ -1,5 +1,3 @@
-<section id="page_#{page_title}">
-
 <!-- tag_info -->
 <section id="tag_info"></section>
 <script type="text/template" id="tag_template">
@@ -16,9 +14,3 @@
 
 <section id="packages"></section>
 ^{partial_package}
-
-</section>
-
-<script type="text/javascript">
-  data = #{json}
-</script>
