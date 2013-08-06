@@ -38,7 +38,7 @@ instance (JSON.ToJSON a) => JSON.ToJSON (Value a) where
   toJSON (Value a) = JSON.toJSON a
 
 getPackages :: Text -> Page -> IO [JSON.Value]
-getPackages t p = getPackages' (getPackagesQuery t p 5)
+getPackages t p = getPackages' (getPackagesQuery t p 10)
 
 getPackagesQuery :: Text -> PackageGetter
 getPackagesQuery tag page lim = from $ \(p,pt,t) -> do
@@ -51,7 +51,7 @@ getPackagesQuery tag page lim = from $ \(p,pt,t) -> do
 
 
 getUpdated :: Page -> IO [JSON.Value]
-getUpdated p = getPackages' (updatedQuery p 10)
+getUpdated p = getPackages' (updatedQuery p 5)
 
 updatedQuery :: PackageGetter
 updatedQuery page lim = from $ \(p `InnerJoin` pt) -> do
@@ -60,7 +60,7 @@ updatedQuery page lim = from $ \(p `InnerJoin` pt) -> do
     packageQuery page lim p
 
 getLatestPackages :: Page -> IO [JSON.Value]
-getLatestPackages p = getPackages' (latestPackagesQuery p 10)
+getLatestPackages p = getPackages' (latestPackagesQuery p 5)
 
 latestPackagesQuery :: PackageGetter
 latestPackagesQuery page lim = from $ \p -> do
