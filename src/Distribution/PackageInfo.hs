@@ -27,7 +27,7 @@ import Data.Time.Clock.POSIX (posixSecondsToUTCTime)
 import Control.Exception (throw)
 
 import Data.Maybe (catMaybes)
-import Data.List (nubBy, sortBy)
+import Data.List (sortBy)
 import Data.Ord (comparing)
 import System.FilePath.Posix (takeBaseName)
 
@@ -78,7 +78,7 @@ isNomalFile _ = False
 -- main
 -- =============================================================================
 
---fetchLatestPackageInfo :: FilePath -> IO [Package]
+fetchLatestPackageInfo :: FilePath -> UTCTime -> IO (Map.HashMap String Package)
 fetchLatestPackageInfo tarName time = do
     contents <- BL.readFile tarName -- "00-index.tar.gz"
     return
@@ -92,6 +92,7 @@ fetchLatestPackageInfo tarName time = do
         $ Tar.read
         $ GZip.decompress contents
 
+hoge :: Tar.Entry -> Maybe (String, Package)
 hoge p = fmap (\pd -> (takeBaseName (Tar.entryPath p), pd)) $ readPackageDescription p
 
 fetchPackageInfo :: FilePath -> IO [Package]
@@ -106,7 +107,7 @@ fetchPackageInfo tarName = do
         $ GZip.decompress contents
 
 readPackageDescription :: Tar.Entry -> Maybe Package
-readPackageDescription entry = fmap pack pd
+readPackageDescription entry = fmap pack package
   where
     pack pd = Package {
         name            = DT.display $ P.pkgName $ PD.package pd
@@ -125,7 +126,7 @@ readPackageDescription entry = fmap pack pd
         , updatedAt     = eToU $ Tar.entryTime entry
     }
     (Tar.NormalFile content _) = Tar.entryContent entry
-    pd = case PDP.parsePackageDescription $ T.unpack $ T.decodeUtf8With T.lenientDecode content of
+    package = case PDP.parsePackageDescription $ T.unpack $ T.decodeUtf8With T.lenientDecode content of
         PDP.ParseOk _ x -> Just $ PD.packageDescription x
         _ -> Nothing
 

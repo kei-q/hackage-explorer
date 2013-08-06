@@ -14,12 +14,13 @@ import DB (runDB)
 -- post
 -- =============================================================================
 
-setTag :: (Key Package, Text) -> IO (Key PackageTag)
+setTag :: (PackageId, Text) -> IO PackageTagId
 setTag (pid, newTag) = runDB $ do
   tid <- insertTag newTag
   now <- liftIO $ getCurrentTime
   insert $ PackageTag pid tid False now
 
+-- insertTag :: Text -> m TagId
 insertTag tag = do
   result <- insertBy (mkTag tag)
   return $ case result of
@@ -30,7 +31,7 @@ insertTag tag = do
 -- delete
 -- =============================================================================
 
-deleteTag :: Key PackageTag -> IO Int64
+deleteTag :: PackageTagId -> IO Int64
 deleteTag ptid = runDB $ do
   deleteCount $ from $ \pt -> do
     where_ (pt ^. PackageTagId ==. val ptid)

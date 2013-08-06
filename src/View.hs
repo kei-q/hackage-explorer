@@ -2,14 +2,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 module View where
 
-import Text.Shakespeare
 import Text.Shakespeare.Text
 import Data.Text.Lazy (Text)
-import Data.Text.Lazy.Builder (toLazyText)
+import Data.Text.Lazy.Builder (toLazyText, Builder)
 import Data.Text.Lazy.Encoding (decodeUtf8)
+import Data.String (IsString)
 
 import qualified Data.Aeson as JSON
 
+partial_package :: t -> Builder
 partial_package = $(textFile "templates/partial/package.ehs")
 
 index :: (JSON.ToJSON a) => a -> Text
@@ -47,6 +48,8 @@ tag raw = layout $(textFile "templates/tag.ehs")
     page_title :: Text
     page_title = "tag"
 
+layout :: IsString a => ((t -> t1 -> a) -> Builder) -> Text
 layout content = toLazyText $ $(textFile "templates/_layout.ehs") dummyRenderUrl
 
+dummyRenderUrl :: IsString a => t -> t1 -> a
 dummyRenderUrl _ _ = ""

@@ -25,7 +25,7 @@ executable hackage-explorer
     filepath ==1.3.*,
 
     -- development
-    wai-handler-devel ==1.3.0.6,
+    -- wai-handler-devel ==1.3.0.6,
 
     -- package
     Cabal ==1.16.*,

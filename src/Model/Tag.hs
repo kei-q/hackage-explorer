@@ -38,9 +38,9 @@ allTags page = runDB $ do
     return $ map (uncurry TagInfo) ret
 
 getTag :: Text -> IO (Entity Tag)
-getTag tagName = runDB $ do
+getTag tagQ = runDB $ do
   tags <- select $ from $ \t -> do
-    where_ (t ^. TagName ==. val tagName)
+    where_ (t ^. TagName ==. val tagQ)
     return t
   return $ head tags -- TODO: partial
 
@@ -70,6 +70,6 @@ search keyword page = runDB $ do
 
 updateSynopsis :: (Key Tag, Text) -> IO ()
 updateSynopsis (tid, synopsis) = runDB $ do
-  update $ \tag -> do
-    set tag [TagSynopsis =. val synopsis]
-    where_ (tag ^. TagId ==. val tid)
+  update $ \t -> do
+    set t [TagSynopsis =. val synopsis]
+    where_ (t ^. TagId ==. val tid)

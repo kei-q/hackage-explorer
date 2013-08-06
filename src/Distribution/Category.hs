@@ -4,9 +4,10 @@ import Text.Trifecta
 import Data.Monoid (mempty)
 
 parse :: String -> [String]
-parse source = case parseString categoriesParser mempty source of
+parse src = case parseString categoriesParser mempty src of
     Success a -> a
-    Failure e -> ["Undefined"]
+    Failure _ -> ["Undefined"]
 
+categoriesParser :: Parser [String]
 categoriesParser = commaSep1 categoryIdentifier
     where categoryIdentifier = some (noneOf ",")

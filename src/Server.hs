@@ -4,7 +4,6 @@ module Server(run) where
 import Control.Monad.IO.Class (liftIO)
 import Network.Wai.Middleware.Static (static)
 import Network.Wai.Middleware.RequestLogger (logStdoutDev)
-import Network.Wai (Application)
 
 import Web.Scotty
 
@@ -90,6 +89,7 @@ run port = scotty port $ do
         liftIO $ Model.Tag.updateSynopsis target
         json True
 
+rescueJSON :: ActionM () -> ActionM ()
 rescueJSON action = action `rescue` \msg -> do
     liftIO $ print msg
     json False
