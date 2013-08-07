@@ -61,6 +61,11 @@ run port = scotty port $ do
         packages <- liftIO $ Model.Package.search (Text.pack keyword) (read page)
         json packages
 
+    --routes "/search" $ do
+    --    get "/packages/:page" $ do
+    --        liftIO $ Model.Package.search <$> param "keyword" <*> param "page"
+
+
     get "/search/tags" $ do
         keyword <- param "keyword"
         target <- liftIO $ Model.Tag.search (Text.pack keyword) 1
