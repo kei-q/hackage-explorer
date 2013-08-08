@@ -43,35 +43,28 @@ run port = scotty port $ do
     middleware static
     middleware logStdoutDev
 
-    get "/" $ do
-        packages <- liftIO $ (,) <$> Model.Package.getUpdated 1 <*> Model.Package.getLatestPackages 1
-        html $ View.index packages
+    get "/" $ liftIO ((,) <$> Model.Package.getUpdated 1 <*> Model.Package.getLatestPackages 1)
+        >>= html . View.index
 
     get "/updated/:page" $ \page -> do
-        packages <- liftIO $ Model.Package.getUpdated (read page)
-        json packages
+        liftIO (Model.Package.getUpdated page) >>= json
 
     get "/latest/:page" $ \page -> do
-        packages <- liftIO $ Model.Package.getLatestPackages (read page)
-        json packages
-
+        liftIO (Model.Package.getLatestPackages page) >>= json
 
     -- search
     get "/search/packages" $ do
         keyword <- param "keyword"
-        target <- liftIO $ Model.Package.search (Text.pack keyword) 1
-        html $ View.searchPackages target
+        liftIO (Model.Package.search keyword 1) >>= html . View.searchPackages
 
     get "/search/packages/:page" $ \page -> do
         keyword <- param "keyword"
-        packages <- liftIO $ Model.Package.search (Text.pack keyword) (read page)
-        json packages
+        liftIO (Model.Package.search keyword page) >>= json
 
     -- create package_tag
     post "/packages/tags/new" $ rescueJSON $ do
         target <- jsonData
-        tag <- liftIO $ Model.PackageTag.setTag target
-        json tag
+        liftIO (Model.PackageTag.setTag target) >>= json
 
     -- delete package_tag
     post "/packages/tags/delete" $ rescueJSON $ do
@@ -81,13 +74,8 @@ run port = scotty port $ do
 
     -- tag
     -- =========================================================================
-    get "/taglist" $ do
-        tags <- runDB' $ Tag.getAll 20 1
-        html $ View.taglist tags
-
-    get "/taglist/:page" $ \page -> do
-        tags <- runDB' $ Tag.getAll 20 page
-        json tags
+    get "/taglist" $ runDB' (Tag.getAll 20 1) >>= html . View.taglist
+    get "/taglist/:page" $ \page -> runDB' (Tag.getAll 20 page) >>= json
 
     get "/tags/:tag" $ \key -> do
         tag <- runDB' $ Tag.getTag key
@@ -98,19 +86,15 @@ run port = scotty port $ do
                 html $ View.tag (t,packages)
 
     get "/tags/:tag/:page" $ \tag page -> do
-        let tag' = Text.pack tag
-        packages <- liftIO $ Model.Package.getPackages tag' page
-        json packages
+        liftIO (Model.Package.getPackages tag page) >>= json
 
     get "/search/tags" $ do
         keyword <- param "keyword"
-        target <- runDB' $ Tag.search keyword 1
-        html $ View.searchTags target
+        runDB' (Tag.search keyword 1) >>= html . View.searchTags
 
     get "/search/tags/:page" $ \page -> do
         keyword <- param "keyword"
-        tags <- runDB' $ Tag.search keyword page
-        json tags
+        runDB' (Tag.search keyword page) >>= json
 
     -- update tag synopsis
     post "/tag/synopsis" $ rescueJSON $ do
