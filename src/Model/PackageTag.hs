@@ -2,11 +2,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Model.PackageTag where
 
+import Import
+
 import Database.Esqueleto
 import Control.Monad.IO.Class (liftIO)
 import Data.Time (getCurrentTime)
-import Data.Text (Text)
-import Data.Int (Int64)
 
 import Model
 import DB (runDB)

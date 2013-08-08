@@ -6,15 +6,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Model where
 
+import Import
 import Database.Persist.TH
---import Distribution.PackageDescription as DPD
---import Distribution.License (License)
-import Data.Time (UTCTime)
-import Data.Text (Text)
-
--- import qualified Model.Tag
-
---derivePersistField DL.License
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 Package json

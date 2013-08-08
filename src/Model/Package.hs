@@ -10,6 +10,8 @@ module Model.Package
     , getPackages'
     ) where
 
+import Import
+
 import Database.Esqueleto
 import Database.Esqueleto.Internal.Sql (unsafeSqlBinOp)
 
@@ -17,8 +19,6 @@ import Data.Aeson ((.=))
 import qualified Data.Aeson as JSON
 
 import qualified Data.List as List
-import Data.Text (Text)
-import Data.Int (Int64)
 
 import Model
 import DB (runDB)
