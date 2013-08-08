@@ -8,14 +8,11 @@ import Network.Wai.Middleware.RequestLogger (logStdoutDev)
 import Network.HTTP.Types (notFound404)
 import Web.Scotty
 
-import Control.Applicative
-import qualified Data.Text as Text
-
-import qualified Model.Package
-import qualified Model.PackageTag
 import qualified View
 
+import qualified Model.Package as Package
 import qualified Model.Tag as Tag
+import qualified Model.PackageTag as PackageTag
 import DB (runDB)
 import ImportDB (SqlM, Int64, Text)
 
@@ -43,34 +40,38 @@ run port = scotty port $ do
     middleware static
     middleware logStdoutDev
 
-    get "/" $ liftIO ((,) <$> Model.Package.getUpdated 1 <*> Model.Package.getLatestPackages 1)
-        >>= html . View.index
-
-    get "/updated/:page" $ \page -> do
-        liftIO (Model.Package.getUpdated page) >>= json
-
-    get "/latest/:page" $ \page -> do
-        liftIO (Model.Package.getLatestPackages page) >>= json
-
-    -- search
-    get "/search/packages" $ do
-        keyword <- param "keyword"
-        liftIO (Model.Package.search keyword 1) >>= html . View.searchPackages
-
-    get "/search/packages/:page" $ \page -> do
-        keyword <- param "keyword"
-        liftIO (Model.Package.search keyword page) >>= json
-
     -- create package_tag
     post "/packages/tags/new" $ rescueJSON $ do
         target <- jsonData
-        liftIO (Model.PackageTag.setTag target) >>= json
+        runDB' (PackageTag.setTag target) >>= json
 
     -- delete package_tag
     post "/packages/tags/delete" $ rescueJSON $ do
         (key:_) <- jsonData -- TODO: pertial
-        count <- liftIO $ Model.PackageTag.deleteTag key
+        count <- runDB' $ PackageTag.deleteTag key
         json $ count == 1
+
+    -- package
+    -- =========================================================================
+    get "/" $ do
+        updated <- runDB' $ Package.getUpdated 1
+        latest <- runDB' $ Package.getLatest 1
+        html $ View.index (updated, latest)
+
+    get "/updated/:page" $ \page -> do
+        runDB' (Package.getUpdated page) >>= json
+
+    get "/latest/:page" $ \page -> do
+        runDB' (Package.getLatest page) >>= json
+
+    get "/search/packages" $ do
+        keyword <- param "keyword"
+        runDB' (Package.search keyword 1) >>= html . View.searchPackages
+
+    get "/search/packages/:page" $ \page -> do
+        keyword <- param "keyword"
+        runDB' (Package.search keyword page) >>= json
+
 
     -- tag
     -- =========================================================================
@@ -82,11 +83,11 @@ run port = scotty port $ do
         case tag of
             Nothing -> r404
             Just t -> do
-                packages <- liftIO $ Model.Package.getPackages key 1
+                packages <- runDB' $ Package.getAll key 1
                 html $ View.tag (t,packages)
 
     get "/tags/:tag/:page" $ \tag page -> do
-        liftIO (Model.Package.getPackages tag page) >>= json
+        runDB' (Package.getAll tag page) >>= json
 
     get "/search/tags" $ do
         keyword <- param "keyword"

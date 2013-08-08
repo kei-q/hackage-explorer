@@ -1,26 +1,22 @@
-{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Model.PackageTag where
 
-import Import
-
-import Database.Esqueleto
 import Control.Monad.IO.Class (liftIO)
 import Data.Time (getCurrentTime)
 
+import ImportDB
 import Model
-import DB (runDB)
 
 -- post
 -- =============================================================================
 
-setTag :: (PackageId, Text) -> IO PackageTagId
-setTag (pid, newTag) = runDB $ do
+setTag :: (PackageId, Text) -> SqlM PackageTagId
+setTag (pid, newTag) = do
   tid <- insertTag newTag
   now <- liftIO $ getCurrentTime
   insert $ PackageTag pid tid False now
 
--- insertTag :: Text -> m TagId
+insertTag :: Text -> SqlM TagId
 insertTag tag = do
   result <- insertBy (mkTag tag)
   return $ case result of
@@ -31,8 +27,8 @@ insertTag tag = do
 -- delete
 -- =============================================================================
 
-deleteTag :: PackageTagId -> IO Int64
-deleteTag ptid = runDB $ do
+deleteTag :: PackageTagId -> SqlM Int64
+deleteTag ptid = do
   deleteCount $ from $ \pt -> do
     where_ (pt ^. PackageTagId ==. val ptid)
     where_ (pt ^. PackageTagLock ==. val False)

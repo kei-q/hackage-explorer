@@ -1,30 +1,18 @@
-{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE FlexibleContexts #-}
 module Model.Package
-    ( getPackages
+    ( getAll
     , getUpdated
-    , getLatestPackages
-    , latestPackagesQuery
+    , getLatest
     , search
-    , getPackages'
     ) where
-
-import Import
-
-import Database.Esqueleto
-import Database.Esqueleto.Internal.Sql (unsafeSqlBinOp)
 
 import Data.Aeson ((.=))
 import qualified Data.Aeson as JSON
 
 import qualified Data.List as List
 
+import ImportDB
 import Model
-import DB (runDB)
-
-type Page = Int64
-type Limit = Int64
 
 type PackageGetter = Page -> Limit -> SqlQuery (SqlExpr (Value PackageId))
 
@@ -34,14 +22,12 @@ packageQuery page lim p = do
     limit lim
     return (p ^. PackageId)
 
-instance (JSON.ToJSON a) => JSON.ToJSON (Value a) where
-  toJSON (Value a) = JSON.toJSON a
 
-getPackages :: Text -> Page -> IO [JSON.Value]
-getPackages t p = getPackages' (getPackagesQuery t p 10)
+getAll :: Text -> Page -> SqlM [JSON.Value]
+getAll t p = getPackages (getAllQuery t p 10)
 
-getPackagesQuery :: Text -> PackageGetter
-getPackagesQuery tag page lim = from $ \(p,pt,t) -> do
+getAllQuery :: Text -> PackageGetter
+getAllQuery tag page lim = from $ \(p,pt,t) -> do
     where_ (t ^. TagName ==. val tag)
     where_ (pt ^. PackageTagTag ==. t ^. TagId)
     where_ (pt ^. PackageTagPackage ==. p ^. PackageId)
@@ -49,9 +35,8 @@ getPackagesQuery tag page lim = from $ \(p,pt,t) -> do
     packageQuery page lim p
 
 
-
-getUpdated :: Page -> IO [JSON.Value]
-getUpdated p = getPackages' (updatedQuery p 5)
+getUpdated :: Page -> SqlM [JSON.Value]
+getUpdated p = getPackages (updatedQuery p 5)
 
 updatedQuery :: PackageGetter
 updatedQuery page lim = from $ \(p `InnerJoin` pt) -> do
@@ -59,8 +44,9 @@ updatedQuery page lim = from $ \(p `InnerJoin` pt) -> do
     orderBy [desc (pt ^. PackageTagCreatedAt)]
     packageQuery page lim p
 
-getLatestPackages :: Page -> IO [JSON.Value]
-getLatestPackages p = getPackages' (latestPackagesQuery p 5)
+
+getLatest :: Page -> SqlM [JSON.Value]
+getLatest p = getPackages (latestPackagesQuery p 5)
 
 latestPackagesQuery :: PackageGetter
 latestPackagesQuery page lim = from $ \p -> do
@@ -68,12 +54,8 @@ latestPackagesQuery page lim = from $ \p -> do
     packageQuery page lim p
 
 
-
-(@@.) :: SqlExpr (Value a) -> SqlExpr (Value a) -> SqlExpr (Value Bool)
-(@@.) = unsafeSqlBinOp " @@ "
-
-search :: Text -> Page -> IO [JSON.Value]
-search keyword p = getPackages' (searchQuery keyword p 10)
+search :: Text -> Page -> SqlM [JSON.Value]
+search keyword p = getPackages (searchQuery keyword p 10)
 
 searchQuery :: Text -> PackageGetter
 searchQuery keyword page lim = from $ \p -> do
@@ -83,10 +65,8 @@ searchQuery keyword page lim = from $ \p -> do
     packageQuery page lim p
 
 
-
-
-getPackages' :: SqlQuery (SqlExpr (Value PackageId)) -> IO [JSON.Value]
-getPackages' packagesQuery = runDB $ do
+getPackages :: SqlQuery (SqlExpr (Value PackageId)) -> SqlM [JSON.Value]
+getPackages packagesQuery = do
   ret <- select $ from $ \(p `InnerJoin` pt `InnerJoin` t) -> do
     on (pt ^. PackageTagTag ==. t ^. TagId)
     on (pt ^. PackageTagPackage ==. p ^. PackageId)
